@@ -14,6 +14,7 @@ let port = 3000
 
 app.use(bodyParser.urlencoded({ extended: true }))
 
+// All Docs
 app.get('/api/article', async (req, res) => {
     try {
         const article = await Article.find()
@@ -27,6 +28,28 @@ app.post('/api/article', async (req, res, next) => {
     req.article = new Article()
     next()
 }, saveArticle())
+
+app.delete('/api/article', async (req, res) => {
+    const article = await Article.deleteMany()
+    res.send(`Deleted all articles:\n ${article}`)
+})
+
+// Individual Documents
+app.get('/api/article/:id', async (req, res) => {
+    const item = req.params.id
+    try {
+        const article = await Article.findOne({ _id: item })
+        res.send(article)
+    } catch (err) {
+        res.send(err)
+    }
+    
+})
+
+// To build out PUT
+
+// To build out PATCH
+
 
 app.delete('/api/article/:id', async (req, res) => {
     const item = req.params.id
